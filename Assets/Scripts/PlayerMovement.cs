@@ -9,40 +9,57 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rb;
     Animator myAnimator;
-    CapsuleCollider2D capCol2D;
+    CapsuleCollider2D bodyCollider;
+    BoxCollider2D footCollider;
 
     public float walkSpeed = 5f;
     public float jumpSpeed = 5f;
     public float climbSpeed = 5f;
+    bool playerHasHorizontalSpeed = false;  
 
     float startGravityScale;
 
-    bool playerHasHorizontalSpeed = false;  
+    bool isAlive = true;
+    public Vector2 deathKick = new Vector2(0, 10);
     
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        capCol2D = GetComponent<CapsuleCollider2D>();
+        bodyCollider = GetComponent<CapsuleCollider2D>();
+        footCollider = GetComponent<BoxCollider2D>();
 
         startGravityScale = rb.gravityScale;
     }
 
     void Update()
     {
+        if (!isAlive)
+        {
+            return;
+        }
+        ClimbLadder();
         Run();
         FlipSprite();
-        ClimbLadder();
+        KillYourselfNow();
     }
 
     void OnMove(InputValue value)
     {
+        if (!isAlive)
+        {
+            return;
+        }
         moveInput = value.Get<Vector2>();
     }
-
     void OnJump(InputValue value)
     {
-        if (!capCol2D.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        if (!isAlive)
+        {
+            return;
+        }
+
+        if (!footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
         {
             return;
         }
@@ -53,11 +70,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
     void ClimbLadder()
     {
         //when the player isn't touching a ladder
-        if (!capCol2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (!footCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             rb.gravityScale = startGravityScale;
 
@@ -84,7 +100,6 @@ public class PlayerMovement : MonoBehaviour
             myAnimator.speed = 0;
         }
     }
-    
     void Run()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * walkSpeed, rb.velocity.y);
@@ -102,13 +117,23 @@ public class PlayerMovement : MonoBehaviour
 
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
     }
-
-    //flips the sprite to the direction the player's moving
     void FlipSprite()
     {
         if(playerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2(Mathf.Sign(rb.velocity.x), 1f);
+        }
+    }
+    void KillYourselfNow()
+    {
+        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            isAlive = false;
+
+            myAnimator.SetBool("isDying", true);
+
+            rb.velocity = deathKick;
+
         }
     }
 }
