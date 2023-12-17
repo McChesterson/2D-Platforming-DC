@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
-        Debug.Log("took damage; Current health = " + currentHealth);
+        //Debug.Log("took damage; Current health = " + currentHealth);
         healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
     }
 
