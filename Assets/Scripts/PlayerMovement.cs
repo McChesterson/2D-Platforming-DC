@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rb;
     Animator myAnimator;
-    CapsuleCollider2D bodyCollider;
+    public CapsuleCollider2D bodyCollider;
     BoxCollider2D footCollider;
 
     public float walkSpeed = 5f;
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         ClimbLadder();
         Run();
         FlipSprite();
-        KillYourselfNow();
+        //Die();
     }
 
     void OnMove(InputValue value)
@@ -124,16 +124,18 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector2(Mathf.Sign(rb.velocity.x), 1f);
         }
     }
-    void KillYourselfNow()
+    
+    public void Die()
     {
-        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        //if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
         {
+
+        }
             isAlive = false;
 
             myAnimator.SetBool("isDying", true);
 
             rb.velocity = deathKick;
-
-        }
     }
+    
 }
