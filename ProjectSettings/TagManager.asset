@@ -15,7 +15,7 @@ TagManager:
   - Ladder
   - Shroom
   - Enemy
-  - 
+  - Interactable
   - 
   - 
   - 
@@ -52,6 +52,9 @@ TagManager:
     locked: 0
   - name: Shroom
     uniqueID: 1417078197
+    locked: 0
+  - name: Interactable
+    uniqueID: 4029442997
     locked: 0
   - name: Enemy
     uniqueID: 3501224289

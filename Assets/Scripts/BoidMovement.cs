@@ -26,6 +26,6 @@ public class BoidMovement : MonoBehaviour
     }
     void FlipEnemySprite()
     {
-        transform.localScale = new Vector2(-Mathf.Sign(rb.velocity.x), 1f);
+        transform.localScale = new Vector2(transform.localScale.x * -1f, 1f);
     }
 }
