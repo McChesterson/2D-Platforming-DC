@@ -39,6 +39,11 @@ public class PlayerHealth : MonoBehaviour
             
             StartCoroutine(IFrames());
         }
+        if (playerMovement.bodyCollider.IsTouchingLayers(LayerMask.GetMask("Spike")))
+        {
+            playerMovement.Die();
+            healthBar.fillAmount = 0;
+        }
     }
 
     public void TakeDamage(int damageAmount)
