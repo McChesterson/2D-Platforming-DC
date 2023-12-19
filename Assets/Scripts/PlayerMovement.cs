@@ -41,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
         ClimbLadder();
         Run();
         FlipSprite();
-        //Die();
     }
 
     void OnMove(InputValue value)
@@ -128,11 +127,11 @@ public class PlayerMovement : MonoBehaviour
     public void Die()
     {
         //if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy"))) {}
-            isAlive = false;
+        isAlive = false;
 
-            myAnimator.SetBool("isDying", true);
+        myAnimator.SetBool("isDying", true);
 
-            rb.velocity = deathKick;
+        rb.velocity = deathKick;
     }
     
 }

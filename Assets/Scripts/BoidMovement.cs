@@ -13,7 +13,6 @@ public class BoidMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-
     void Update()
     {
         rb.velocity = new Vector2(moveSpeed, 0f);
