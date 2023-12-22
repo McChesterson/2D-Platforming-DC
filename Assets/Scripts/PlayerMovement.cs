@@ -15,13 +15,13 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5f;
     public float jumpSpeed = 5f;
     public float climbSpeed = 5f;
-    bool playerHasHorizontalSpeed = false;  
+    bool playerHasHorizontalSpeed = false;
 
     float startGravityScale;
 
     bool isAlive = true;
     public Vector2 deathKick = new Vector2(0, 10);
-    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
         ClimbLadder();
         Run();
         FlipSprite();
+
+        //makes sure that the player doesn't fall too fast for the dropper on level 2
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -10, 10));
     }
 
     void OnMove(InputValue value)
@@ -58,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (!footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        if (!footCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             return;
         }
@@ -105,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = playerVelocity;
 
         //sets playerHasHorizontalSpeed
-        if(moveInput.x != 0)
+        if (moveInput.x != 0)
         {
             playerHasHorizontalSpeed = true;
         }
@@ -118,20 +121,18 @@ public class PlayerMovement : MonoBehaviour
     }
     void FlipSprite()
     {
-        if(playerHasHorizontalSpeed)
+        if (playerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2(Mathf.Sign(rb.velocity.x), 1f);
         }
     }
-    
+
     public void Die()
     {
-        //if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy"))) {}
         isAlive = false;
 
         myAnimator.SetBool("isDying", true);
 
         rb.velocity = deathKick;
     }
-    
 }

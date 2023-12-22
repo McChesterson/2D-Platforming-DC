@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public PlayerMovement playerMovement;
+    PlayerMovement playerMovement;
     SpriteRenderer sR;
 
     public int maxHealth = 100;
@@ -22,13 +23,14 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         sR = gameObject.GetComponent<SpriteRenderer>();
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
     }
 
     void Update()
     {
         if (playerMovement.bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")) && !isInvincible)
         {
-            TakeDamage(34);
+            TakeDamage(51);
 
             if (currentHealth <= 0)
             {
@@ -41,8 +43,13 @@ public class PlayerHealth : MonoBehaviour
         }
         if (playerMovement.bodyCollider.IsTouchingLayers(LayerMask.GetMask("Spike")))
         {
+            dead = true;
             playerMovement.Die();
             healthBar.fillAmount = 0;
+        }
+        if (dead)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
