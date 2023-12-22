@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             myAnimator.speed = 0;
         }
     }
-    void Run()
+    public void Run()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * walkSpeed, rb.velocity.y);
         rb.velocity = playerVelocity;
